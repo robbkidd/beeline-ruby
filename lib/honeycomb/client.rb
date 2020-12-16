@@ -24,7 +24,7 @@ module Honeycomb
       @libhoney.add_field "meta.beeline_version", Honeycomb::Beeline::VERSION
       @libhoney.add_field "meta.local_hostname", configuration.host_name
 
-      integrations = Honeycomb.integrations_to_load
+      integrations = Honeycomb.integrations_loaded
       @libhoney.add_field "meta.instrumentations_count", integrations.count
       @libhoney.add_field "meta.instrumentations", integrations.map(&:to_s).to_s
 

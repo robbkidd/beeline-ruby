@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "set"
 require "forwardable"
 require "libhoney"
 require "honeycomb/beeline/version"
@@ -25,6 +26,8 @@ module Honeycomb
     extend Forwardable
     attr_reader :client
 
+    @@integrations_loaded = Set.new
+
     def_delegators :@client, :libhoney, :start_span, :add_field,
                    :add_field_to_trace, :current_span, :current_trace
 
@@ -41,9 +44,14 @@ module Honeycomb
       integrations_to_load.each do |integration|
         begin
           require "honeycomb/integrations/#{integration}"
+          @@integrations_loaded.add(integration)
         rescue LoadError
         end
       end
+    end
+
+    def integrations_loaded
+      @@integrations_loaded
     end
 
     def integrations_to_load
