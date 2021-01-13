@@ -1,6 +1,6 @@
 on:
   - issues
-  - labels
+  - label
   - pull_request_target
   - pull_request
 jobs:
